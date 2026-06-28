@@ -1,4 +1,5 @@
 const FREE_PLAN_URL = 'downloads/how-to-gym-arm-workout-plan.pdf';
+const FORM_NAME = 'contact';
 
 // Mobile navigation
 const navToggle = document.querySelector('.nav-toggle');
@@ -34,11 +35,41 @@ function triggerDownload(url, filename) {
   document.body.removeChild(link);
 }
 
-// Contact form — free plan download on submit
+function encodeFormData(form) {
+  const params = new URLSearchParams();
+  params.append('form-name', FORM_NAME);
+
+  form.querySelectorAll('input, select, textarea').forEach((field) => {
+    if (!field.name || field.type === 'submit' || field.type === 'button') return;
+    if ((field.type === 'radio' || field.type === 'checkbox') && !field.checked) return;
+    params.append(field.name, field.value);
+  });
+
+  return params.toString();
+}
+
+async function submitToNetlify(form) {
+  const response = await fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: encodeFormData(form),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Netlify returned ${response.status}`);
+  }
+
+  return response;
+}
+
+// Contact form — submit to Netlify, then download PDF
 const form = document.querySelector('.contact-form');
 const successMessage = form?.querySelector('.form-success');
+let allowNativeSubmit = false;
 
 form?.addEventListener('submit', async (e) => {
+  if (allowNativeSubmit) return;
+
   e.preventDefault();
 
   const btn = form.querySelector('button[type="submit"]');
@@ -48,11 +79,7 @@ form?.addEventListener('submit', async (e) => {
   btn.disabled = true;
 
   try {
-    await fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(new FormData(form)).toString(),
-    });
+    await submitToNetlify(form);
 
     triggerDownload(FREE_PLAN_URL, 'how-to-gym-arm-workout-plan.pdf');
 
@@ -65,10 +92,12 @@ form?.addEventListener('submit', async (e) => {
       successMessage?.setAttribute('hidden', '');
       form.reset();
     }, 5000);
-  } catch {
+  } catch (error) {
+    console.error('Form submission failed, falling back to native submit:', error);
+    allowNativeSubmit = true;
     btn.textContent = original;
     btn.disabled = false;
-    alert('Something went wrong. Please try again.');
+    form.submit();
   }
 });
 

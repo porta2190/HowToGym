@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You | How To Gym</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal: #00c9c8;
+      --dark: #0d1117;
+      --white: #f5f7fa;
+      --gray-300: #9aa5b1;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+      text-align: center;
+    }
+    .card {
+      max-width: 480px;
+      padding: 2.5rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      background: #151b24;
+    }
+    h1 {
+      font-family: "Oswald", sans-serif;
+      text-transform: uppercase;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    p { color: var(--gray-300); line-height: 1.7; margin-bottom: 1.5rem; }
+    a {
+      display: inline-block;
+      padding: 0.85rem 1.5rem;
+      border-radius: 50px;
+      background: linear-gradient(135deg, var(--teal), #00a8a7);
+      color: var(--dark);
+      font-weight: 700;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>You're all set!</h1>
+    <p>Thanks for signing up. Your free arm workout plan should be downloading now. Check your inbox — we'll be in touch if you requested a custom plan.</p>
+    <a href="/">Back to How To Gym</a>
+  </div>
+  <script>
+    const link = document.createElement('a');
+    link.href = 'downloads/how-to-gym-arm-workout-plan.pdf';
+    link.download = 'how-to-gym-arm-workout-plan.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  </script>
+</body>
+</html>
