@@ -108,7 +108,18 @@
             </div>
           </div>
         </div>
-        <form class="contact-form" action="#" method="post">
+        <form
+          class="contact-form"
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
+          action="/"
+        >
+          <input type="hidden" name="form-name" value="contact" />
+          <p class="hidden-field">
+            <label>Don't fill this out: <input name="bot-field" /></label>
+          </p>
           <div class="form-row">
             <label>
               <span>Name</span>
@@ -357,6 +368,19 @@
       <p>&copy; 2026 How To Gym. All rights reserved.</p>
     </div>
   </footer>
+
+  <!-- Static form for Netlify build-time detection -->
+  <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <select name="plan">
+      <option value="free-only">Just the free arm workout</option>
+      <option value="workout">Custom Workout Plan</option>
+      <option value="nutrition">Custom Nutrition Plan</option>
+      <option value="complete">Complete Package</option>
+    </select>
+    <textarea name="goals"></textarea>
+  </form>
 
   <script src="script.js"></script>
 </body>

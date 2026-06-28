@@ -749,6 +749,14 @@ ul, ol {
   color: var(--gray-500);
 }
 
+.hidden-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .form-note {
   font-size: 0.78rem;
   color: var(--gray-500);

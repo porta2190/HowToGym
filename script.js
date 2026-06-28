@@ -38,24 +38,38 @@ function triggerDownload(url, filename) {
 const form = document.querySelector('.contact-form');
 const successMessage = form?.querySelector('.form-success');
 
-form?.addEventListener('submit', (e) => {
+form?.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const btn = form.querySelector('button[type="submit"]');
   const original = btn.textContent;
 
-  triggerDownload(FREE_PLAN_URL, 'how-to-gym-arm-workout-plan.pdf');
-
-  btn.textContent = 'Download Started!';
+  btn.textContent = 'Submitting...';
   btn.disabled = true;
-  successMessage?.removeAttribute('hidden');
 
-  setTimeout(() => {
+  try {
+    await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString(),
+    });
+
+    triggerDownload(FREE_PLAN_URL, 'how-to-gym-arm-workout-plan.pdf');
+
+    btn.textContent = 'Download Started!';
+    successMessage?.removeAttribute('hidden');
+
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.disabled = false;
+      successMessage?.setAttribute('hidden', '');
+      form.reset();
+    }, 5000);
+  } catch {
     btn.textContent = original;
     btn.disabled = false;
-    successMessage?.setAttribute('hidden', '');
-    form.reset();
-  }, 5000);
+    alert('Something went wrong. Please try again.');
+  }
 });
 
 // Fade-in on scroll
